@@ -1,15 +1,15 @@
 class LoginPage{
     visit(){
-        cy.visit('/');
+        cy.visit('/index.html');
     }
     fillUsername(username){
-        cy.get('#username').type(username);
+        cy.get('[data-test="username"]').type(username);
     }
     fillPassword(password){
-        cy.get('#password').type(password);
+        cy.get('[data-test="password"]').type(password);
     }
     submit(){
-        cy.get('login-button').click();
+        cy.get('#login-button').click();
     }
 }
 

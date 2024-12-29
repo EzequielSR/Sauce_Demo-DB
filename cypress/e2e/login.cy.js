@@ -1,21 +1,23 @@
-import LoginPage from '../support/pages/LoginPage';
+import LoginPage from "../support/pages/LoginPage";
 
-describe('Login Test', () => {
-    it('deve fazer login com credenciais validas', () => {
+describe('Testes no Login', () =>{
+    beforeEach(() => {
         LoginPage.visit();
-        LoginPage.fillUsername('valid_user');
-        LoginPage.fillPassword('valid_password');
-        LoginPage.submit();
+    })
+
+    it('Deve fazer login com sucesso', () => {
+        LoginPage.fillUsername('standard_user')
+        LoginPage.fillPassword('secret_sauce')
+        LoginPage.submit()
 
         cy.url().should('include', '/inventory.html')
     })
 
-    it('deve aparecer erro com credenciais invalidas', () => {
-        LoginPage.visit();
-        LoginPage.fillUsername('invalid_user');
-        LoginPage.fillPassword('invalid_password');
-        LoginPage.submit();
+    it('Deve fazer login sem sucesso', () => {
+        LoginPage.fillUsername('another_user')
+        LoginPage.fillPassword('wrong-password')
+        LoginPage.submit()
 
-        cy.get('.error-message').should('be.visible');
+        cy.get('[data-test="error"]').should('be.visible');
     })
 })
