@@ -1,0 +1,8 @@
+{
+  "firstNameInput": "[data-test = 'firstName']",
+  "lastNameInput": "[data-test = 'lastName']",
+  "postalCodeInput": "[data-test = 'postalCode']",
+  "continueButton": ".btn_primary",
+  "finishButton": ".btn_action",
+  "thankYouHeader": ".complete-header"
+}

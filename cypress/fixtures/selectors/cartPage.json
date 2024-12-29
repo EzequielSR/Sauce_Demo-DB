@@ -1,0 +1,5 @@
+{
+  "cartItems": ".cart_item",
+  "removeButtons": ".cart_item button",
+  "checkoutButton": ".btn_action"
+}

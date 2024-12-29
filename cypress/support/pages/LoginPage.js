@@ -1,15 +1,17 @@
+import selectors from '../../fixtures/selectors/login.json'
+
 class LoginPage{
     visit(){
         cy.visit('/index.html');
     }
     fillUsername(username){
-        cy.get('[data-test="username"]').type(username);
+        cy.get(selectors.username).type(username);
     }
     fillPassword(password){
-        cy.get('[data-test="password"]').type(password);
+        cy.get(selectors.password).type(password);
     }
     submit(){
-        cy.get('#login-button').click();
+        cy.get(selectors.loginButton).click();
     }
 }
 

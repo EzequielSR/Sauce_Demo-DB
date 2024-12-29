@@ -1,0 +1,7 @@
+{
+  "productList": ".inventory_list",
+  "addToCartButtons": ".inventory_item button",
+  "cartBadge": ".fa-layers-counter",
+  "sortDropdown": ".product_sort_container",
+  "productPrices": ".inventory_item_price"
+}
