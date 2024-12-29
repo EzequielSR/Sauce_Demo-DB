@@ -13,11 +13,23 @@ describe('Testes no Login', () =>{
         cy.url().should('include', '/inventory.html')
     })
 
-    it('Deve fazer login sem sucesso', () => {
+    it('Deve aparecer erro ao preencher credenciais inválidas', () => {
         LoginPage.fillUsername('another_user')
         LoginPage.fillPassword('wrong-password')
         LoginPage.submit()
 
-        cy.get('[data-test="error"]').should('be.visible');
+        cy.get('[data-test="error"]').should('be.visible')
+            .and('contain', 'Epic sadface: Username and password do not match any user in this service');
+    })
+
+    it('Deve aparecer erro ao entrar sem credenciais', () => {
+        LoginPage.submit()
+        cy.get('[data-test="error"]').should('be.visible').and('contain', 'Epic sadface: Username is required');
+    })
+
+    it('Deve aparecer erro ao entrar sem a credencial de senha', () => {
+        LoginPage.fillUsername('standard_user')
+        LoginPage.submit()
+        cy.get('[data-test="error"]').should('be.visible').and('contain', 'Epic sadface: Password is required');
     })
 })
