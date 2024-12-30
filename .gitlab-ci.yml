@@ -11,6 +11,7 @@ variables:
   REPORTS_DIR: cypress/reports
   MOCHAWESOME_JSON: cypress/reports/mochawesome.json
   MOCHAWESOME_HTML: cypress/reports/index.html
+  GIT_SSL_NO_VERIFY: "true"
 
 install-dependencies:
   stage: install
