@@ -51,5 +51,4 @@ generate-report:
     expire_in: 1 week
 
 after_script:
-  script:
-    - if [ "$CI_JOB_STATUS" != "success" ]; then echo "Pipeline falhou. Notificar equipe ou responsável."; fi
+  - if [ "$CI_JOB_STATUS" != "success" ]; then echo "Pipeline falhou. Notificar equipe ou responsável."; fi
