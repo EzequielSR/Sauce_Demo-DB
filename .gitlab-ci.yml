@@ -22,7 +22,7 @@ test:
   stage: test
   image: cypress/included:13.17.0
   script:
-    - npm run test
+    - npm run test  
   artifacts:
     when: always
     expire_in: 1 week
