@@ -1,4 +1,5 @@
 stages:
+  - install
   - test
   - report
 
@@ -6,25 +7,41 @@ cache:
   paths:
     - node_modules/
 
+variables:
+  REPORTS_DIR: cypress/reports
+  MOCHAWESOME_JSON: cypress/reports/mochawesome.json
+  MOCHAWESOME_HTML: cypress/reports/index.html
+
+install-dependencies:
+  stage: install
+  image: node:16
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
 test:
   stage: test
   image: cypress/included:13.17.0
   script:
-    - npm install
     - npm run test
   artifacts:
     paths:
-      - cypress/reports/
+      - $REPORTS_DIR
+    when: always
+    allow_failure: false
 
-report:
+generate-report:
   stage: report
   image: node:16
   dependencies:
     - test
   script:
-    - npm install
-    - npx mochawesome-merge cypress/reports/*.json > cypress/reports/mochawesome.json
-    - npx mochawesome-report-generator cypress/reports/mochawesome.json --inline
+    - npx mochawesome-merge $REPORTS_DIR/*.json > $MOCHAWESOME_JSON
+    - npx mochawesome-report-generator $MOCHAWESOME_JSON --reportDir $REPORTS_DIR --reportFilename index.html --assetsDir assets --inline
   artifacts:
     paths:
-      - cypress/reports/mochawesome-report/
+      - $REPORTS_DIR
+    expire_in: 1 week
+    allow_failure: false
