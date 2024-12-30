@@ -1,16 +1,12 @@
 stages:
   - install
   - test
-  - report
 
 cache:
   paths:
     - node_modules/
 
 variables:
-  REPORTS_DIR: cypress/reports
-  MOCHAWESOME_JSON: cypress/reports/mochawesome.json
-  MOCHAWESOME_HTML: cypress/reports/index.html
   GIT_SSL_NO_VERIFY: "true"
 
 install-dependencies:
@@ -27,28 +23,7 @@ test:
   image: cypress/included:13.17.0
   script:
     - npm run test
-    - echo "Verificando arquivos JSON gerados:"
-    - ls -lh cypress/reports
   artifacts:
-    paths:
-      - $REPORTS_DIR
     when: always
-  allow_failure: false
-
-generate-report:
-  stage: report
-  image: node:16
-  dependencies:
-    - test
-  script:
-    - echo "Arquivos disponíveis para mesclagem:"
-    - ls -lh $REPORTS_DIR
-    - if [ "$(ls -A $REPORTS_DIR/*.json 2>/dev/null)" ]; then npx mochawesome-merge $REPORTS_DIR/*.json > $MOCHAWESOME_JSON; else echo "Nenhum relatório disponível para mesclar."; fi
-    - if [ -f "$MOCHAWESOME_JSON" ]; then npx mochawesome-report-generator $MOCHAWESOME_JSON --reportDir $REPORTS_DIR --reportFilename index.html --assetsDir assets --inline; else echo "Nenhum relatório foi gerado."; fi
-  artifacts:
-    paths:
-      - $REPORTS_DIR
     expire_in: 1 week
-
-after_script:
-  - if [ "$CI_JOB_STATUS" != "success" ]; then echo "Pipeline falhou. Notificar equipe ou responsável."; fi
+  allow_failure: false
