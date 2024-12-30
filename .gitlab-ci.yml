@@ -30,7 +30,7 @@ test:
     paths:
       - $REPORTS_DIR
     when: always
-    allow_failure: false
+  allow_failure: false
 
 generate-report:
   stage: report
@@ -44,4 +44,3 @@ generate-report:
     paths:
       - $REPORTS_DIR
     expire_in: 1 week
-    allow_failure: false
