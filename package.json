@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "cypress run",
+    "test": "cypress run  --config integrationFolder=cypress/integration",
     "open": "cypress open",
     "merge-reports": "npx mochawesome-merge cypress/reports/*.json > cypress/reports/mochawesome.json",
     "generate-report": "npx mochawesome-report-generator cypress/reports/mochawesome.json --inline",

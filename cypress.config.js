@@ -14,6 +14,7 @@ module.exports = defineConfig({
     html: true,
     json: true,
     chart: true,
+    video: false,
     reportFilename: 'mochawesome-report'
   }
   },
