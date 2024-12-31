@@ -1,6 +1,7 @@
 stages:
   - test
 
+# Cache to speed up the pipeline by reusing dependencies
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
@@ -11,14 +12,22 @@ test:
   image: cypress/browsers:22.12.0
   stage: test
   script:
-    # install dependencies
+    # Install dependencies
     - npm ci
-    # start the server in the background
+    # Start the server in the background
     - npm start &
-    # run Cypress tests
-    - npx cypress run --browser chrome
+    # Run Cypress tests and generate detailed reports
+    - npx cypress run --browser chrome --reporter mochawesome --reporter-options reportDir=cypress/reports
   artifacts:
     when: always
     paths:
       - cypress/reports
     expire_in: 1 day
+  # Notify on failure (can be adapted to Slack, email, or other services)
+  after_script:
+    - |
+      if [ $? -ne 0 ]; then
+        echo "Test failed. Sending notification..."
+        # Example: Send failure notification to Slack or any other service
+        curl -X POST -H 'Content-type: application/json' --data '{"text":"Cypress tests failed in the pipeline!"}' https://hooks.slack.com/services/YOUR_SLACK_WEBHOOK_URL
+      fi
