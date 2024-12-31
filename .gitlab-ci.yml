@@ -31,7 +31,3 @@ deploy:
     - echo "Deploy do projeto"
   only:
     - master
-
-notifications:
-  on_failure:
-    - slack: '#ci-failures'
