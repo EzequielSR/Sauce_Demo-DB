@@ -1,51 +1,37 @@
 stages:
   - install
   - test
-  - report
-
-cache:
-  paths:
-    - node_modules/
+  - deploy
 
 variables:
-  REPORTS_DIR: cypress/reports
-  MOCHAWESOME_HTML: cypress/reports/mochawesome-report.html
-  GIT_SSL_NO_VERIFY: "true"
+  CYPRESS_INSTALL_BINARY: 0
+  REPORT_DIR: "cypress/reports"
 
+before_script:
+  - npm ci
 
-install-dependencies:
+install:
   stage: install
-  image: node:16
   script:
-    - npm install
-  artifacts:
-    paths:
-      - node_modules/
-
+    - echo "Instalando dependências..."
 
 test:
   stage: test
-  image: cypress/included:13.17.0
   script:
-    - npm run test
+    - npx cypress run --reporter mochawesome --reporter-options "reportDir=${REPORT_DIR},reporterFilename='[status]_[datetime]-[name]-reports',charts=true"
   artifacts:
     paths:
-      - $REPORTS_DIR
-    when: always
-  allow_failure: false
-
-
-generate-report:
-  stage: report
-  image: node:16
-  dependencies:
-    - test
-  script:
-    - npx mochawesome-report-generator $REPORTS_DIR/*.json --reportDir $REPORTS_DIR --reportFilename mochawesome-report.html --assetsDir assets --inline
-  artifacts:
-    paths:
-      - $REPORTS_DIR
+      - cypress/reports/*.html
+      - cypress/reports/*.json
     expire_in: 1 week
 
-after_script:
-  - if [ "$CI_JOB_STATUS" != "success" ]; then echo "Pipeline falhou. Notificar equipe ou responsável."; fi
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploy do projeto"
+  only:
+    - master
+
+notifications:
+  on_failure:
+    - slack: '#ci-failures'

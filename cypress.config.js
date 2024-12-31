@@ -2,20 +2,20 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
+       setupNodeEvents(on,config){
+         require('cypress-mochawesome-reporter/plugin')(on);
+       },
     baseUrl: 'https://www.saucedemo.com/v1',
-    setupNodeEvents(on, config) {
-      require('cypress-mochawesome-reporter/plugin')(on);
+    reporter:"cypress-mochawesome-reporter",
+    reporterOptions: {
+        charts:"true",
+        reportDir:"cypress/reports",
+        reportPageTitle:"custom-title",
+        reporterFilename: "[status]_[datetime]-[name]-reports",
+        timestamp:"longDate",
+        embeddedScreenshots: true,
+        inlineAssets: true,
+        saveAllAttempts: true,
     },
-
-  reporter: 'cypress-mochawesome-reporter',
-  reporterOptions: {
-    reportDir: 'cypress/reports',
-    overwrite: false,
-    html: true,
-    json: true,
-    chart: true,
-    video: false,
-    reportFilename: 'mochawesome-report'
-  }
   },
 });
