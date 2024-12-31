@@ -9,7 +9,7 @@ cache:
 
 variables:
   REPORTS_DIR: cypress/reports
-  MOCHAWESOME_HTML: cypress/reports/index.html
+  MOCHAWESOME_HTML: cypress/reports/mochawesome-report.html
   GIT_SSL_NO_VERIFY: "true"
 
 
@@ -41,7 +41,7 @@ generate-report:
   dependencies:
     - test
   script:
-    - npx mochawesome-report-generator $REPORTS_DIR/*.json --reportDir $REPORTS_DIR --reportFilename index.html --assetsDir assets --inline
+    - npx mochawesome-report-generator $REPORTS_DIR/*.json --reportDir $REPORTS_DIR --reportFilename mochawesome-report.html --assetsDir assets --inline
   artifacts:
     paths:
       - $REPORTS_DIR
