@@ -9,9 +9,9 @@ cache:
 
 variables:
   REPORTS_DIR: cypress/reports
-  MOCHAWESOME_JSON: cypress/reports/mochawesome.json
   MOCHAWESOME_HTML: cypress/reports/index.html
   GIT_SSL_NO_VERIFY: "true"
+
 
 install-dependencies:
   stage: install
@@ -21,6 +21,7 @@ install-dependencies:
   artifacts:
     paths:
       - node_modules/
+
 
 test:
   stage: test
@@ -33,19 +34,18 @@ test:
     when: always
   allow_failure: false
 
+
 generate-report:
   stage: report
   image: node:16
   dependencies:
     - test
   script:
-    - npx mochawesome-merge $REPORTS_DIR/*.json > $MOCHAWESOME_JSON
-    - npx mochawesome-report-generator $MOCHAWESOME_JSON --reportDir $REPORTS_DIR --reportFilename index.html --assetsDir assets --inline
+    - npx mochawesome-report-generator $REPORTS_DIR/*.json --reportDir $REPORTS_DIR --reportFilename index.html --assetsDir assets --inline
   artifacts:
     paths:
       - $REPORTS_DIR
     expire_in: 1 week
 
-# Configuração de notificações
 after_script:
   - if [ "$CI_JOB_STATUS" != "success" ]; then echo "Pipeline falhou. Notificar equipe ou responsável."; fi
